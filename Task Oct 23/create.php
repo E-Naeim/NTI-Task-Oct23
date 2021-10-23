@@ -10,14 +10,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $validate = new validator;
 
     $title      =  $validate->clean($_POST['title']);
-    $content   =  $validate->clean($_POST['content']);
+    $content    =  $validate->clean($_POST['content']);
  
     $ImageTmp   =  $_FILES['image']['tmp_name'];
     $ImageName  =  $_FILES['image']['name'];
     $ImageSize  =  $_FILES['image']['size'];
     $ImageType  =  $_FILES['image']['type'];
  
-
     $TypeArray = explode('/', $ImageType);
 
     $errors = [];
@@ -25,7 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (!$validate->validate($title, 1)) {
         $errors['title'] = "Field Required";
     }
-
     
     if (!$validate->validate($content, 1)) {
         $errors['content'] = "Field Required";
@@ -37,15 +35,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $errors['image'] = "Image Field Required";
     } elseif (!$validate->validate($TypeArray[1], 6)) {
         $errors['image'] = "Invalid Extension";
+    } else {
+        $FinalName = rand(1, 100).time().'.'.$TypeArray[1];
+        $disPath = './uploads/'.$FinalName;
     }
-    $FinalName = rand(1, 100).time().'.'.$TypeArray[1];
- 
-    $disPath = './uploads/'.$FinalName;
- 
+
     if (move_uploaded_file($ImageTmp, $disPath)) {
         $blog = new  blog();
-
-        $reuslt = $blog->creat($title, $content, $FinalName);
+        $reuslt = $blog->create($title, $content, $FinalName);
 
         if ($reuslt) {
             echo 'data inserted';
@@ -54,7 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         }
     }
 
-    
     if (count($errors) > 0) {
         foreach ($errors as $key => $val) {
             echo '* '.$key.' :  '.$val.'<br>';
