@@ -1,7 +1,9 @@
 <?php
 require 'validator.php';
 require 'BlogClass.php';
+
 $blog = new  blog();
+
 $reuslt = $blog->display();
 ?>
 
@@ -49,7 +51,9 @@ $reuslt = $blog->display();
                 </td>
                 <td> <?php echo $blog['content']; ?>
                 </td>
-                <td> <?php echo $blog['image']; ?>
+                <td> <img
+                        src="./uploads/<?php  echo $blog['image'];?>"
+                        width="50 px" height="50 px">
                 </td>
                 <td>
                     <a href='delete.php?id=<?php echo $blog['id']; ?>'
