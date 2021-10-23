@@ -1,8 +1,10 @@
 <?php
  require 'validator.php';
  require 'BlogClass.php';
+
  $id = $_GET['id'];
  $validate = new validator;
+
  if (!$validate->validate($id, 5)) {
      if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
@@ -11,7 +13,7 @@
          $validate = new validator;
      
          $title      =  $validate->clean($_POST['title']);
-         $content   =  $validate->clean($_POST['content']);
+         $content    =  $validate->clean($_POST['content']);
       
          $ImageTmp   =  $_FILES['image']['tmp_name'];
          $ImageName  =  $_FILES['image']['name'];
@@ -27,7 +29,6 @@
              $errors['title'] = "Field Required";
          }
      
-         
          if (!$validate->validate($content, 1)) {
              $errors['content'] = "Field Required";
          } elseif (!$validate->validate($content, 3)) {
@@ -38,15 +39,16 @@
              $errors['image'] = "Image Field Required";
          } elseif (!$validate->validate($TypeArray[1], 6)) {
              $errors['image'] = "Invalid Extension";
+         } else {
+             $FinalName = rand(1, 100).time().'.'.$TypeArray[1];
+      
+             $disPath = './uploads/'.$FinalName;
          }
-         $FinalName = rand(1, 100).time().'.'.$TypeArray[1];
-      
-         $disPath = './uploads/'.$FinalName;
-      
+
          if (move_uploaded_file($ImageTmp, $disPath)) {
              $blog = new  blog();
      
-             $reuslt = $blog->edit($title, $content, $FinalName);
+             $reuslt = $blog->edit($id, $title, $content, $FinalName);
      
              if ($reuslt) {
                  header("Location:display.php");
