@@ -99,13 +99,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 <input type="file" name="image">
             </div>
 
+            <button type='submit' class="btn btn-primary btn-lg">Sumbit</button>
 
-
-            <button type="submit" class="btn btn-primary">Upload</button>
-
-
-
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button class="alert alert-success"><a target="_blank" class="link-primary" href="display.php">Return To
+                    Display</a></button>
         </form>
     </div>
 
